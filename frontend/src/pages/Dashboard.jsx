@@ -24,9 +24,9 @@ export default function Dashboard() {
   const [error, setError] = useState("");
   const [showNewTask, setShowNewTask] = useState(false);
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    setError("");
+  const load = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
+    if (!silent) setError("");
     try {
       let data;
       if (view === "assigned") data = await api.assignedToMe();
@@ -34,15 +34,18 @@ export default function Dashboard() {
       else if (view === "completed") data = await api.completedTasks();
       else data = await api.listTasks({ search, status, priority });
       setTasks(data);
+      if (silent) setError("");
     } catch (err) {
-      setError(err.message);
+      if (!silent) setError(err.message);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   }, [api, view, search, status, priority]);
 
   useEffect(() => {
     load();
+    const interval = setInterval(() => load(true), 5000);
+    return () => clearInterval(interval);
   }, [load]);
 
   useEffect(() => {

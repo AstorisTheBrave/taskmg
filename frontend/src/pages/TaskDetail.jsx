@@ -18,22 +18,24 @@ export default function TaskDetail() {
 
   const canModify = task && (user.role === "ADMIN" || task.assignedTo === user.id);
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    setError("");
+  const load = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
+    if (!silent) setError("");
     try {
       const [t, c] = await Promise.all([api.getTask(id), api.listComments(id)]);
       setTask(t);
       setComments(c);
     } catch (err) {
-      setError(err.message);
+      if (!silent) setError(err.message);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   }, [api, id]);
 
   useEffect(() => {
     load();
+    const interval = setInterval(() => load(true), 5000);
+    return () => clearInterval(interval);
   }, [load]);
 
   useEffect(() => {
