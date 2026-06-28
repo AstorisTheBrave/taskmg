@@ -1,32 +1,56 @@
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import TaskDetail from "./pages/TaskDetail";
+import Users from "./pages/Users";
+import Activity from "./pages/Activity";
 
-function Dashboard() {
-  const { user, logout } = useAuth();
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-center">
-        <p className="text-slate-700 mb-4">Signed in as {user.name} ({user.role})</p>
-        <button
-          onClick={logout}
-          className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-lg"
-        >
-          Log out
-        </button>
-      </div>
-    </div>
-  );
+function AdminRoute({ children }) {
+  const { user } = useAuth();
+  return user.role === "ADMIN" ? children : <Navigate to="/" replace />;
 }
 
-function Root() {
+function AppShell() {
   const { user } = useAuth();
-  return user ? <Dashboard /> : <Login />;
+
+  if (!user) return <Login />;
+
+  return (
+    <BrowserRouter>
+      <div className="min-h-screen bg-slate-50">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/tasks/:id" element={<TaskDetail />} />
+          <Route
+            path="/users"
+            element={
+              <AdminRoute>
+                <Users />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/activity"
+            element={
+              <AdminRoute>
+                <Activity />
+              </AdminRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
+  );
 }
 
 export default function App() {
   return (
     <AuthProvider>
-      <Root />
+      <AppShell />
     </AuthProvider>
   );
 }
