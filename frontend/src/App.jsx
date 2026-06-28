@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import TaskDetail from "./pages/TaskDetail";
 import Users from "./pages/Users";
 import Activity from "./pages/Activity";
+import Chat from "./pages/Chat";
 
 function RequireAuth({ children }) {
   const { user } = useAuth();
@@ -52,6 +53,16 @@ function AppRoutes() {
           <RequireAuth>
             <AuthenticatedLayout>
               <TaskDetail />
+            </AuthenticatedLayout>
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/chat"
+        element={
+          <RequireAuth>
+            <AuthenticatedLayout>
+              <Chat />
             </AuthenticatedLayout>
           </RequireAuth>
         }

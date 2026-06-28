@@ -24,6 +24,8 @@ export function useApi() {
       assignedToMe: () => api.assignedToMe(token),
       overdueTasks: () => api.overdueTasks(token),
       completedTasks: () => api.completedTasks(token),
+      listMessages: () => api.listMessages(token),
+      createMessage: (content) => api.createMessage(token, content),
     }),
     [token]
   );

@@ -24,6 +24,7 @@ export default function Navbar() {
       <div className="flex items-center gap-1">
         <span className="font-bold text-slate-900 mr-4">Nucleus</span>
         <NavLink to="/">Dashboard</NavLink>
+        <NavLink to="/chat">Chat</NavLink>
         {user.role === "ADMIN" && <NavLink to="/users">Users</NavLink>}
         {user.role === "ADMIN" && <NavLink to="/activity">Activity</NavLink>}
       </div>

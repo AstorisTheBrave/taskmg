@@ -106,4 +106,12 @@ export function completedTasks(token) {
   return request("/dashboard/completed", { token });
 }
 
+export function listMessages(token) {
+  return request("/messages", { token });
+}
+
+export function createMessage(token, content) {
+  return request("/messages", { method: "POST", body: { content }, token });
+}
+
 export { request };
