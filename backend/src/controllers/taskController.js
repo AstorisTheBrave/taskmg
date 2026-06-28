@@ -113,9 +113,17 @@ async function remove(req, res, next) {
     const existing = await prisma.task.findUnique({ where: { id: req.params.id } });
     if (!existing) return next(new NotFoundError("Task not found"));
 
-    await prisma.task.delete({ where: { id: req.params.id } });
+    await prisma.$transaction([
+      prisma.comment.deleteMany({ where: { taskId: req.params.id } }),
+      prisma.activityLog.updateMany({ where: { taskId: req.params.id }, data: { taskId: null } }),
+      prisma.task.delete({ where: { id: req.params.id } }),
+    ]);
 
-    await logActivity({ taskId: req.params.id, userId: req.user.id, action: "TASK_DELETED" });
+    await logActivity({
+      userId: req.user.id,
+      action: "TASK_DELETED",
+      metadata: { deletedTaskId: req.params.id },
+    });
 
     res.status(204).end();
   } catch (err) {
