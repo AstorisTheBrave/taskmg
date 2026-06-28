@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, signup } = useAuth();
   const [tab, setTab] = useState("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,30 +14,35 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+    if (!email || !password) {
+      setError("Enter your email and password.");
+      return;
+    }
     setLoading(true);
-    // Simulate auth – replace with real API call
-    setTimeout(() => {
-      if (email && password) {
-        login({ name: email.split("@")[0], email, avatar: null });
-      } else {
-        setError("Enter your email and password.");
-      }
+    try {
+      await login(email, password);
+    } catch (err) {
+      setError(err.message);
+    } finally {
       setLoading(false);
-    }, 700);
+    }
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
+    if (!name || !email || !password || !inviteCode) {
+      setError("All fields are required to join.");
+      return;
+    }
     setLoading(true);
-    setTimeout(() => {
-      if (name && email && password && inviteCode) {
-        login({ name, email, avatar: null });
-      } else {
-        setError("All fields are required to join.");
-      }
+    try {
+      await signup(name, email, password);
+    } catch (err) {
+      setError(err.message);
+    } finally {
       setLoading(false);
-    }, 700);
+    }
   };
 
   return (
