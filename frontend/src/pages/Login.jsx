@@ -37,7 +37,7 @@ export default function Login() {
     }
     setLoading(true);
     try {
-      await signup(name, email, password);
+      await signup(name, email, password, inviteCode);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -157,7 +157,7 @@ export default function Login() {
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1.5">
                     Invite code
-                    <span className="ml-1.5 text-slate-400 font-normal">— ask your team admin</span>
+                    <span className="ml-1.5 text-slate-400 font-normal">(ask your team admin)</span>
                   </label>
                   <input
                     type="text"

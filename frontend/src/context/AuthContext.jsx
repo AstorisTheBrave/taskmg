@@ -28,8 +28,8 @@ export function AuthProvider({ children }) {
     return data.user;
   }
 
-  async function signup(name, email, password) {
-    const data = await api.signup(name, email, password);
+  async function signup(name, email, password, inviteCode) {
+    const data = await api.signup(name, email, password, inviteCode);
     applySession(data);
     return data.user;
   }

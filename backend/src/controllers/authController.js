@@ -9,7 +9,7 @@ const signupSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
   password: z.string().min(8),
-  role: z.enum(["ADMIN", "MEMBER"]).default("MEMBER"),
+  inviteCode: z.string().min(1),
 });
 
 const loginSchema = z.object({
@@ -26,6 +26,11 @@ function signToken(user) {
 async function signup(req, res, next) {
   try {
     const data = signupSchema.parse(req.body);
+
+    if (data.inviteCode !== process.env.INVITE_CODE) {
+      return next(new ValidationError("Invalid invite code"));
+    }
+
     const passwordHash = await bcrypt.hash(data.password, 10);
 
     const user = await prisma.user.create({
@@ -33,7 +38,7 @@ async function signup(req, res, next) {
         name: data.name,
         email: data.email,
         password: passwordHash,
-        role: data.role,
+        role: "MEMBER",
       },
     });
 

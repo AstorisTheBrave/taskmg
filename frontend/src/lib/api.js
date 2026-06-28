@@ -23,8 +23,8 @@ export function login(email, password) {
   return request("/auth/login", { method: "POST", body: { email, password } });
 }
 
-export function signup(name, email, password) {
-  return request("/auth/signup", { method: "POST", body: { name, email, password } });
+export function signup(name, email, password, inviteCode) {
+  return request("/auth/signup", { method: "POST", body: { name, email, password, inviteCode } });
 }
 
 export function listTasks(token, params = {}) {
