@@ -2,55 +2,95 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import TaskDetail from "./pages/TaskDetail";
 import Users from "./pages/Users";
 import Activity from "./pages/Activity";
 
-function AdminRoute({ children }) {
+function RequireAuth({ children }) {
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/login" replace />;
+}
+
+function RequireAdmin({ children }) {
   const { user } = useAuth();
   return user.role === "ADMIN" ? children : <Navigate to="/" replace />;
 }
 
-function AppShell() {
+function AuthenticatedLayout({ children }) {
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <Navbar />
+      {children}
+    </div>
+  );
+}
+
+function AppRoutes() {
   const { user } = useAuth();
 
-  if (!user) return <Login />;
-
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-slate-50">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/tasks/:id" element={<TaskDetail />} />
-          <Route
-            path="/users"
-            element={
-              <AdminRoute>
+    <Routes>
+      <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route
+        path="/"
+        element={
+          <RequireAuth>
+            <AuthenticatedLayout>
+              <Dashboard />
+            </AuthenticatedLayout>
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/tasks/:id"
+        element={
+          <RequireAuth>
+            <AuthenticatedLayout>
+              <TaskDetail />
+            </AuthenticatedLayout>
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/users"
+        element={
+          <RequireAuth>
+            <RequireAdmin>
+              <AuthenticatedLayout>
                 <Users />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/activity"
-            element={
-              <AdminRoute>
+              </AuthenticatedLayout>
+            </RequireAdmin>
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/activity"
+        element={
+          <RequireAuth>
+            <RequireAdmin>
+              <AuthenticatedLayout>
                 <Activity />
-              </AdminRoute>
-            }
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+              </AuthenticatedLayout>
+            </RequireAdmin>
+          </RequireAuth>
+        }
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 
 export default function App() {
   return (
     <AuthProvider>
-      <AppShell />
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
     </AuthProvider>
   );
 }

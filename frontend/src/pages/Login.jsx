@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
@@ -110,9 +111,9 @@ export default function Login() {
                     <input type="checkbox" className="rounded border-slate-300 text-violet-600" />
                     Remember me
                   </label>
-                  <button type="button" className="text-sm text-violet-600 hover:text-violet-700 font-medium">
+                  <Link to="/forgot-password" className="text-sm text-violet-600 hover:text-violet-700 font-medium">
                     Forgot password?
-                  </button>
+                  </Link>
                 </div>
                 <button
                   type="submit"

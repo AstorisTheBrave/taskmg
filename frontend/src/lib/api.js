@@ -27,6 +27,14 @@ export function signup(name, email, password, inviteCode) {
   return request("/auth/signup", { method: "POST", body: { name, email, password, inviteCode } });
 }
 
+export function forgotPassword(email) {
+  return request("/auth/forgot-password", { method: "POST", body: { email } });
+}
+
+export function resetPassword(token, password) {
+  return request("/auth/reset-password", { method: "POST", body: { token, password } });
+}
+
 export function listTasks(token, params = {}) {
   const query = new URLSearchParams(
     Object.fromEntries(Object.entries(params).filter(([, v]) => v))
