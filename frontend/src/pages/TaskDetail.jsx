@@ -3,6 +3,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useApi } from "../hooks/useApi";
 
+const STATUS_LABELS = {
+  TODO: "Todo",
+  IN_PROGRESS: "In progress",
+  REVIEW: "In review",
+  DONE: "Done",
+};
+
 export default function TaskDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -15,8 +22,21 @@ export default function TaskDetail() {
   const [newComment, setNewComment] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
 
-  const canModify = task && (user.role === "ADMIN" || task.assignedTo === user.id);
+  const [showSubmitForm, setShowSubmitForm] = useState(false);
+  const [completionLink, setCompletionLink] = useState("");
+  const [completionNote, setCompletionNote] = useState("");
+
+  const [showRejectForm, setShowRejectForm] = useState(false);
+  const [rejectNote, setRejectNote] = useState("");
+
+  const [editingAssignees, setEditingAssignees] = useState(false);
+  const [draftAssigneeIds, setDraftAssigneeIds] = useState([]);
+
+  const isAdmin = user.role === "ADMIN";
+  const isAssignee = task ? task.assignees.some((a) => a.id === user.id) : false;
+  const canAct = isAdmin || isAssignee;
 
   const load = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
@@ -38,28 +58,62 @@ export default function TaskDetail() {
     return () => clearInterval(interval);
   }, [load]);
 
-  useEffect(() => {
-    if (user.role === "ADMIN") {
-      api.listUsers().then(setUsers).catch(() => {});
-    }
-  }, [api, user.role]);
-
-  const handleStatusChange = async (e) => {
+  const runAction = async (fn) => {
+    setError("");
+    setActionLoading(true);
     try {
-      const updated = await api.setTaskStatus(id, e.target.value);
+      const updated = await fn();
       setTask(updated);
     } catch (err) {
       setError(err.message);
+    } finally {
+      setActionLoading(false);
     }
   };
 
-  const handleAssign = async (e) => {
+  const handleStart = () => runAction(() => api.startTask(id));
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    await runAction(() => api.submitTaskForReview(id, completionLink.trim(), completionNote.trim()));
+    setShowSubmitForm(false);
+    setCompletionLink("");
+    setCompletionNote("");
+  };
+
+  const handleApprove = () => runAction(() => api.approveTask(id));
+
+  const handleReject = async (e) => {
+    e.preventDefault();
+    await runAction(() => api.rejectTask(id, rejectNote.trim()));
+    setShowRejectForm(false);
+    setRejectNote("");
+    load(true);
+  };
+
+  const handleOverrideStatus = (e) => runAction(() => api.setTaskStatus(id, e.target.value));
+
+  const startEditingAssignees = async () => {
+    setDraftAssigneeIds(task.assignees.map((a) => a.id));
+    setEditingAssignees(true);
     try {
-      const updated = await api.assignTask(id, e.target.value);
-      setTask(updated);
-    } catch (err) {
-      setError(err.message);
+      setUsers(await api.listUsers());
+    } catch {
+      // keep showing whatever was last loaded
     }
+  };
+
+  const toggleDraftAssignee = (uid) => {
+    setDraftAssigneeIds((prev) => (prev.includes(uid) ? prev.filter((a) => a !== uid) : [...prev, uid]));
+  };
+
+  const saveAssignees = async () => {
+    if (draftAssigneeIds.length === 0) {
+      setError("A task needs at least one assignee.");
+      return;
+    }
+    await runAction(() => api.assignTask(id, draftAssigneeIds));
+    setEditingAssignees(false);
   };
 
   const handleDelete = async () => {
@@ -84,7 +138,7 @@ export default function TaskDetail() {
     }
   };
 
-  if (loading) return <p className="max-w-3xl mx-auto px-6 py-8 text-sm text-slate-400">Loading…</p>;
+  if (loading) return <p className="max-w-3xl mx-auto px-6 py-8 text-sm text-slate-400">Loading...</p>;
   if (error && !task) return <p className="max-w-3xl mx-auto px-6 py-8 text-sm text-red-600">{error}</p>;
   if (!task) return null;
 
@@ -101,7 +155,7 @@ export default function TaskDetail() {
       <div className="bg-white border border-slate-200 rounded-xl p-6">
         <div className="flex items-start justify-between gap-3">
           <h1 className="text-lg font-bold text-slate-900">{task.title}</h1>
-          {user.role === "ADMIN" && (
+          {isAdmin && (
             <button onClick={handleDelete} className="text-sm text-red-600 hover:text-red-700 font-medium">
               Delete
             </button>
@@ -112,45 +166,216 @@ export default function TaskDetail() {
         <div className="grid grid-cols-2 gap-4 mt-5">
           <div>
             <label className="block text-xs font-medium text-slate-500 mb-1">Status</label>
-            <select
-              value={task.status}
-              onChange={handleStatusChange}
-              disabled={!canModify}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm disabled:bg-slate-50 disabled:text-slate-400"
-            >
-              <option value="TODO">Todo</option>
-              <option value="IN_PROGRESS">In progress</option>
-              <option value="REVIEW">Review</option>
-              <option value="DONE">Done</option>
-            </select>
+            <p className="px-3 py-2 text-sm text-slate-700">{STATUS_LABELS[task.status]}</p>
           </div>
           <div>
             <label className="block text-xs font-medium text-slate-500 mb-1">Priority</label>
             <p className="px-3 py-2 text-sm text-slate-700">{task.priority}</p>
           </div>
-          {user.role === "ADMIN" && (
-            <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">Assigned to</label>
-              <select
-                value={task.assignedTo}
-                onChange={handleAssign}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm"
-              >
-                {users.map((u) => (
-                  <option key={u.id} value={u.id}>
-                    {u.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
           {task.dueDate && (
             <div>
               <label className="block text-xs font-medium text-slate-500 mb-1">Due date</label>
               <p className="px-3 py-2 text-sm text-slate-700">{new Date(task.dueDate).toLocaleDateString()}</p>
             </div>
           )}
+          <div>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Created by</label>
+            <p className="px-3 py-2 text-sm text-slate-700">{task.creator.name}</p>
+          </div>
         </div>
+
+        <div className="mt-4">
+          <div className="flex items-center justify-between mb-1">
+            <label className="block text-xs font-medium text-slate-500">Assignees</label>
+            {isAdmin && !editingAssignees && (
+              <button onClick={startEditingAssignees} className="text-xs text-violet-600 hover:text-violet-700 font-medium">
+                Edit
+              </button>
+            )}
+          </div>
+          {editingAssignees ? (
+            <div>
+              <div className="border border-slate-200 rounded-lg max-h-36 overflow-y-auto divide-y divide-slate-100">
+                {users.map((u) => (
+                  <label key={u.id} className="flex items-center gap-2 px-3 py-2 text-sm cursor-pointer hover:bg-slate-50">
+                    <input
+                      type="checkbox"
+                      checked={draftAssigneeIds.includes(u.id)}
+                      onChange={() => toggleDraftAssignee(u.id)}
+                      className="rounded border-slate-300 text-violet-600"
+                    />
+                    {u.name}
+                  </label>
+                ))}
+              </div>
+              <div className="flex gap-2 mt-2">
+                <button
+                  onClick={saveAssignees}
+                  disabled={actionLoading}
+                  className="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold rounded-lg"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => setEditingAssignees(false)}
+                  className="px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 rounded-lg"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-1.5">
+              {task.assignees.map((a) => (
+                <span key={a.id} className="px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
+                  {a.name}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {(task.completionLink || task.completionNote) && (
+          <div className="mt-4 p-3 rounded-lg bg-amber-50 border border-amber-100">
+            <p className="text-xs font-medium text-amber-700 mb-1">Submitted for review</p>
+            {task.completionLink && (
+              <a
+                href={task.completionLink}
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm text-violet-600 hover:text-violet-700 underline break-all"
+              >
+                {task.completionLink}
+              </a>
+            )}
+            {task.completionNote && <p className="text-sm text-slate-700 mt-1">{task.completionNote}</p>}
+          </div>
+        )}
+
+        {task.status === "DONE" && task.reviewer && (
+          <p className="text-xs text-slate-400 mt-3">
+            Approved by {task.reviewer.name} on {new Date(task.reviewedAt).toLocaleString()}
+          </p>
+        )}
+
+        <div className="mt-5 pt-5 border-t border-slate-100 flex flex-wrap items-center gap-2">
+          {task.status === "TODO" && canAct && (
+            <button
+              onClick={handleStart}
+              disabled={actionLoading}
+              className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg"
+            >
+              Mark as taken
+            </button>
+          )}
+
+          {task.status === "IN_PROGRESS" && canAct && !showSubmitForm && (
+            <button
+              onClick={() => setShowSubmitForm(true)}
+              className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-lg"
+            >
+              Submit for review
+            </button>
+          )}
+
+          {task.status === "REVIEW" && !isAdmin && (
+            <span className="px-3 py-2 text-sm text-amber-700 bg-amber-50 rounded-lg">Waiting for review</span>
+          )}
+
+          {task.status === "REVIEW" && isAdmin && !showRejectForm && (
+            <>
+              <button
+                onClick={handleApprove}
+                disabled={actionLoading}
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white text-sm font-semibold rounded-lg"
+              >
+                Approve
+              </button>
+              <button
+                onClick={() => setShowRejectForm(true)}
+                className="px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 rounded-lg"
+              >
+                Reject
+              </button>
+            </>
+          )}
+
+          {isAdmin && (
+            <select
+              value={task.status}
+              onChange={handleOverrideStatus}
+              disabled={actionLoading}
+              className="ml-auto px-2 py-1.5 rounded-lg border border-slate-200 text-xs text-slate-500"
+            >
+              <option value="TODO">Override: Todo</option>
+              <option value="IN_PROGRESS">Override: In progress</option>
+              <option value="REVIEW">Override: In review</option>
+              <option value="DONE">Override: Done</option>
+            </select>
+          )}
+        </div>
+
+        {showSubmitForm && (
+          <form onSubmit={handleSubmitReview} className="mt-4 p-4 bg-slate-50 rounded-lg space-y-2">
+            <input
+              value={completionLink}
+              onChange={(e) => setCompletionLink(e.target.value)}
+              placeholder="Link to your work (optional)"
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+            />
+            <textarea
+              value={completionNote}
+              onChange={(e) => setCompletionNote(e.target.value)}
+              placeholder="Note for the reviewer (optional)"
+              rows={2}
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+            />
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                disabled={actionLoading}
+                className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg"
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowSubmitForm(false)}
+                className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
+
+        {showRejectForm && (
+          <form onSubmit={handleReject} className="mt-4 p-4 bg-slate-50 rounded-lg space-y-2">
+            <textarea
+              value={rejectNote}
+              onChange={(e) => setRejectNote(e.target.value)}
+              placeholder="What needs to change? (optional, posted as a comment)"
+              rows={2}
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+            />
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                disabled={actionLoading}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white text-sm font-semibold rounded-lg"
+              >
+                Send back
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowRejectForm(false)}
+                className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
       </div>
 
       <div className="bg-white border border-slate-200 rounded-xl p-6 mt-6">
@@ -161,6 +386,7 @@ export default function TaskDetail() {
           ) : (
             comments.map((c) => (
               <div key={c.id} className="bg-slate-50 rounded-lg p-3">
+                <p className="text-xs font-semibold text-slate-500">{c.user.name}</p>
                 <p className="text-sm text-slate-700">{c.content}</p>
                 <p className="text-xs text-slate-400 mt-1">{new Date(c.createdAt).toLocaleString()}</p>
               </div>
@@ -171,7 +397,7 @@ export default function TaskDetail() {
           <input
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Add a comment…"
+            placeholder="Add a comment..."
             className="flex-1 px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
           />
           <button

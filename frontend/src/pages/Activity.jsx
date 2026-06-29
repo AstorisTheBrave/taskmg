@@ -1,5 +1,40 @@
 import { useEffect, useState, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { useApi } from "../hooks/useApi";
+
+function actorName(log) {
+  return log.user ? log.user.name : "Someone";
+}
+
+function taskTitle(log) {
+  if (log.task) return `"${log.task.title}"`;
+  if (log.metadata && log.metadata.title) return `"${log.metadata.title}"`;
+  return "a task";
+}
+
+const DESCRIPTIONS = {
+  TASK_CREATED: (log) => `${actorName(log)} created ${taskTitle(log)}`,
+  TASK_UPDATED: (log) => `${actorName(log)} edited ${taskTitle(log)}`,
+  TASK_DELETED: (log) => `${actorName(log)} deleted ${taskTitle(log)}`,
+  TASK_ASSIGNED: (log) => `${actorName(log)} changed who is assigned to ${taskTitle(log)}`,
+  TASK_STATUS_CHANGED: (log) =>
+    `${actorName(log)} set ${taskTitle(log)} to ${(log.metadata?.status || "").replaceAll("_", " ").toLowerCase() || "a new status"}`,
+  TASK_STARTED: (log) => `${actorName(log)} marked ${taskTitle(log)} as taken`,
+  TASK_SUBMITTED_FOR_REVIEW: (log) => `${actorName(log)} submitted ${taskTitle(log)} for review`,
+  TASK_APPROVED: (log) => `${actorName(log)} approved ${taskTitle(log)}`,
+  TASK_REJECTED: (log) => `${actorName(log)} sent ${taskTitle(log)} back for more work`,
+  COMMENT_CREATED: (log) => `${actorName(log)} commented on ${taskTitle(log)}`,
+  USER_CREATED: (log) => `${actorName(log)} added a new user`,
+  USER_UPDATED: (log) => `${actorName(log)} updated a user`,
+  USER_DELETED: (log) => `${actorName(log)} removed a user`,
+  PASSWORD_RESET_REQUESTED: () => "A password reset was requested",
+  PASSWORD_RESET_COMPLETED: () => "A password was reset",
+};
+
+function describe(log) {
+  const fn = DESCRIPTIONS[log.action];
+  return fn ? fn(log) : `${actorName(log)} ${log.action.replaceAll("_", " ").toLowerCase()}`;
+}
 
 export default function Activity() {
   const api = useApi();
@@ -25,22 +60,32 @@ export default function Activity() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-8">
-      <h1 className="text-xl font-bold text-slate-900 mb-6">Activity log</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-xl font-bold text-slate-900">Activity log</h1>
+        <p className="text-xs text-slate-400">Showing the most recent 200 events</p>
+      </div>
 
       {error && (
         <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm">{error}</div>
       )}
 
       {loading ? (
-        <p className="text-sm text-slate-400">Loading…</p>
+        <p className="text-sm text-slate-400">Loading...</p>
       ) : logs.length === 0 ? (
         <p className="text-sm text-slate-400">No activity yet.</p>
       ) : (
         <div className="bg-white border border-slate-200 rounded-xl divide-y divide-slate-100">
           {logs.map((log) => (
-            <div key={log.id} className="px-4 py-3 flex items-center justify-between text-sm">
-              <span className="font-medium text-slate-700">{log.action.replaceAll("_", " ")}</span>
-              <span className="text-slate-400 text-xs">{new Date(log.createdAt).toLocaleString()}</span>
+            <div key={log.id} className="px-4 py-3 flex items-center justify-between gap-3 text-sm">
+              <span className="text-slate-700">{describe(log)}</span>
+              <div className="flex items-center gap-3 shrink-0">
+                {log.task && (
+                  <Link to={`/tasks/${log.task.id}`} className="text-xs text-violet-600 hover:text-violet-700 font-medium">
+                    View task
+                  </Link>
+                )}
+                <span className="text-slate-400 text-xs">{new Date(log.createdAt).toLocaleString()}</span>
+              </div>
             </div>
           ))}
         </div>

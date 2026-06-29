@@ -48,11 +48,16 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, [load]);
 
-  useEffect(() => {
+  const openNewTask = async () => {
     if (user.role === "ADMIN") {
-      api.listUsers().then(setUsers).catch(() => {});
+      try {
+        setUsers(await api.listUsers());
+      } catch {
+        // fall through, modal will just show whatever was last loaded
+      }
     }
-  }, [api, user.role]);
+    setShowNewTask(true);
+  };
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-8">
@@ -60,7 +65,7 @@ export default function Dashboard() {
         <h1 className="text-xl font-bold text-slate-900">Tasks</h1>
         {user.role === "ADMIN" && (
           <button
-            onClick={() => setShowNewTask(true)}
+            onClick={openNewTask}
             className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-lg"
           >
             New task

@@ -4,16 +4,20 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("MEDIUM");
-  const [assignedTo, setAssignedTo] = useState(users[0]?.id || "");
+  const [assigneeIds, setAssigneeIds] = useState(users[0] ? [users[0].id] : []);
   const [dueDate, setDueDate] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const toggleAssignee = (id) => {
+    setAssigneeIds((prev) => (prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (!title || !assignedTo) {
-      setError("Title and assignee are required.");
+    if (!title || assigneeIds.length === 0) {
+      setError("Title and at least one assignee are required.");
       return;
     }
     setLoading(true);
@@ -22,7 +26,7 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
         title,
         description: description || undefined,
         priority,
-        assignedTo,
+        assigneeIds,
         dueDate: dueDate || undefined,
       });
       onClose();
@@ -85,17 +89,19 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Assign to</label>
-            <select
-              value={assignedTo}
-              onChange={(e) => setAssignedTo(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
-            >
+            <div className="border border-slate-200 rounded-lg max-h-36 overflow-y-auto divide-y divide-slate-100">
               {users.map((u) => (
-                <option key={u.id} value={u.id}>
+                <label key={u.id} className="flex items-center gap-2 px-3 py-2 text-sm cursor-pointer hover:bg-slate-50">
+                  <input
+                    type="checkbox"
+                    checked={assigneeIds.includes(u.id)}
+                    onChange={() => toggleAssignee(u.id)}
+                    className="rounded border-slate-300 text-violet-600"
+                  />
                   {u.name} ({u.role})
-                </option>
+                </label>
               ))}
-            </select>
+            </div>
           </div>
           <div className="flex justify-end gap-2 pt-2">
             <button
@@ -110,7 +116,7 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
               disabled={loading}
               className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg"
             >
-              {loading ? "Creating…" : "Create task"}
+              {loading ? "Creating..." : "Create task"}
             </button>
           </div>
         </form>

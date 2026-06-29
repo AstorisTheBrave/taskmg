@@ -30,6 +30,9 @@ export default function TaskCard({ task }) {
       {task.description && (
         <p className="text-sm text-slate-500 mt-1 line-clamp-2">{task.description}</p>
       )}
+      {task.assignees && task.assignees.length > 0 && (
+        <p className="text-xs text-slate-400 mt-2">{task.assignees.map((a) => a.name).join(", ")}</p>
+      )}
       <div className="flex items-center gap-2 mt-3">
         <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[task.status]}`}>
           {task.status.replace("_", " ")}

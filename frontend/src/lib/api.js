@@ -58,12 +58,32 @@ export function deleteTask(token, id) {
   return request(`/tasks/${id}`, { method: "DELETE", token });
 }
 
-export function assignTask(token, id, assignedTo) {
-  return request(`/tasks/${id}/assign`, { method: "PATCH", body: { assignedTo }, token });
+export function assignTask(token, id, assigneeIds) {
+  return request(`/tasks/${id}/assign`, { method: "PATCH", body: { assigneeIds }, token });
 }
 
 export function setTaskStatus(token, id, status) {
   return request(`/tasks/${id}/status`, { method: "PATCH", body: { status }, token });
+}
+
+export function startTask(token, id) {
+  return request(`/tasks/${id}/start`, { method: "POST", token });
+}
+
+export function submitTaskForReview(token, id, completionLink, completionNote) {
+  return request(`/tasks/${id}/submit-review`, {
+    method: "POST",
+    body: { completionLink: completionLink || undefined, completionNote: completionNote || undefined },
+    token,
+  });
+}
+
+export function approveTask(token, id) {
+  return request(`/tasks/${id}/approve`, { method: "POST", token });
+}
+
+export function rejectTask(token, id, note) {
+  return request(`/tasks/${id}/reject`, { method: "POST", body: { note: note || undefined }, token });
 }
 
 export function listComments(token, taskId) {
