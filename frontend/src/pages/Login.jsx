@@ -47,7 +47,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f7f4] flex items-center justify-center px-4 transition-colors duration-300 dark:bg-[#0f0f14]">
+    <div className="flex min-h-screen items-center justify-center bg-[#f8f7f4] px-3 py-4 transition-colors duration-300 dark:bg-[#0f0f14] sm:px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
@@ -77,7 +77,7 @@ export default function Login() {
             </button>
           </div>
 
-          <div className="p-8">
+          <div className="p-4 sm:p-8">
             {error && (
               <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-300">
                 {error}
@@ -103,7 +103,7 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500"
+                    className="w-full min-h-[44px] rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-base text-slate-900 outline-none placeholder:text-slate-400 dark:border-white/10 dark:bg-[#16161f] dark:text-slate-100 dark:placeholder:text-slate-500"
                   />
                 </div>
                 <div className="flex items-center justify-between">
@@ -118,7 +118,7 @@ export default function Login() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-2.5 px-4 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg transition-colors"
+                  className="w-full min-h-[44px] rounded-lg bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-violet-700 disabled:bg-violet-400"
                 >
                   {loading ? "Signing in…" : "Sign in"}
                 </button>
@@ -132,7 +132,7 @@ export default function Login() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Alex Johnson"
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500"
+                    className="w-full min-h-[44px] rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-base text-slate-900 outline-none placeholder:text-slate-400 dark:border-white/10 dark:bg-[#16161f] dark:text-slate-100 dark:placeholder:text-slate-500"
                   />
                 </div>
                 <div>
@@ -142,7 +142,7 @@ export default function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@company.com"
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500"
+                    className="w-full min-h-[44px] rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-base text-slate-900 outline-none placeholder:text-slate-400 dark:border-white/10 dark:bg-[#16161f] dark:text-slate-100 dark:placeholder:text-slate-500"
                   />
                 </div>
                 <div>
@@ -152,7 +152,7 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Min. 8 characters"
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500"
+                    className="w-full min-h-[44px] rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-base text-slate-900 outline-none placeholder:text-slate-400 dark:border-white/10 dark:bg-[#16161f] dark:text-slate-100 dark:placeholder:text-slate-500"
                   />
                 </div>
                 <div>
@@ -165,13 +165,13 @@ export default function Login() {
                     value={inviteCode}
                     onChange={(e) => setInviteCode(e.target.value)}
                     placeholder="e.g. NUC-XXXX"
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500"
+                    className="w-full min-h-[44px] rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-base text-slate-900 outline-none placeholder:text-slate-400 dark:border-white/10 dark:bg-[#16161f] dark:text-slate-100 dark:placeholder:text-slate-500"
                   />
                 </div>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-2.5 px-4 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg transition-colors"
+                  className="w-full min-h-[44px] rounded-lg bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-violet-700 disabled:bg-violet-400"
                 >
                   {loading ? "Creating account…" : "Join workspace"}
                 </button>

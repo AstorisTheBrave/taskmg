@@ -60,28 +60,28 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-8">
-      <div className="flex items-center justify-between mb-6">
+    <div className="mx-auto max-w-5xl px-4 py-4 sm:px-6 sm:py-8">
+      <div className="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-xl font-bold text-slate-900 dark:text-white">Tasks</h1>
         {user.role === "ADMIN" && (
           <button
             onClick={openNewTask}
-            className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-lg"
+            className="min-h-[44px] rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-violet-700"
           >
             New task
           </button>
         )}
       </div>
 
-      <div className="flex flex-wrap items-center gap-2 mb-4">
+      <div className="mb-4 flex flex-wrap items-center gap-2">
         {VIEWS.map((v) => (
           <button
             key={v.key}
             onClick={() => setView(v.key)}
-            className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
+            className={`min-h-[44px] flex-1 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors sm:flex-none ${
               view === v.key
                 ? "bg-violet-600 text-white dark:bg-violet-600 dark:text-white"
-                : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300 dark:bg-[#1e1e2e] dark:text-slate-300 dark:border-white/10 dark:hover:border-violet-500/40"
+                : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300 dark:border-white/10 dark:bg-[#1e1e2e] dark:text-slate-300 dark:hover:border-violet-500/40"
             }`}
           >
             {v.label}
@@ -90,17 +90,17 @@ export default function Dashboard() {
       </div>
 
       {view === "all" && (
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by title…"
-            className="flex-1 min-w-[200px] px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 outline-none dark:bg-[#1e1e2e] dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500"
+            className="w-full min-h-[44px] flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none placeholder:text-slate-400 dark:border-white/10 dark:bg-[#1e1e2e] dark:text-slate-100 dark:placeholder:text-slate-500 sm:min-w-[220px]"
           />
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#1e1e2e] dark:border-white/10 dark:text-slate-100"
+            className="w-full min-h-[44px] rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none dark:border-white/10 dark:bg-[#1e1e2e] dark:text-slate-100 sm:w-auto"
           >
             <option value="">All statuses</option>
             <option value="TODO">Todo</option>
@@ -111,7 +111,7 @@ export default function Dashboard() {
           <select
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
-            className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#1e1e2e] dark:border-white/10 dark:text-slate-100"
+            className="w-full min-h-[44px] rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none dark:border-white/10 dark:bg-[#1e1e2e] dark:text-slate-100 sm:w-auto"
           >
             <option value="">All priorities</option>
             <option value="LOW">Low</option>

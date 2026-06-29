@@ -57,8 +57,8 @@ export default function Chat() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-8 flex flex-col h-[calc(100vh-64px)]">
-      <h1 className="text-xl font-bold text-slate-900 mb-4 dark:text-white">Chat</h1>
+    <div className="mx-auto flex h-[calc(100vh-64px)] max-w-3xl flex-col px-4 pb-24 pt-4 sm:px-6 sm:pb-0 sm:py-8">
+      <h1 className="mb-4 text-xl font-bold text-slate-900 dark:text-white">Chat</h1>
 
       {error && (
         <div className="mb-3 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-300 text-sm">{error}</div>
@@ -66,7 +66,7 @@ export default function Chat() {
 
       <div
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto bg-white border border-slate-200 rounded-xl p-4 space-y-3 chat-scrollbar dark:bg-[#1e1e2e] dark:border-white/10"
+        className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-slate-200 bg-white p-4 space-y-3 chat-scrollbar dark:border-white/10 dark:bg-[#1e1e2e]"
       >
         {loading ? (
           <p className="text-sm text-slate-400">Loading...</p>
@@ -78,7 +78,7 @@ export default function Chat() {
             return (
               <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
                 <div
-                  className={`max-w-[75%] rounded-2xl px-4 py-2 ${
+                  className={`max-w-[85%] rounded-2xl px-4 py-2 sm:max-w-[75%] ${
                     mine ? "bg-violet-600 text-white" : "bg-slate-100 text-slate-800 dark:bg-[#2a2a3e] dark:text-white"
                   }`}
                 >
@@ -99,16 +99,19 @@ export default function Chat() {
         <div ref={bottomRef} />
       </div>
 
-      <form onSubmit={handleSubmit} className="flex gap-2 mt-3">
+      <form
+        onSubmit={handleSubmit}
+        className="fixed inset-x-0 bottom-0 z-10 mt-3 flex flex-col gap-2 border-t border-slate-200 bg-white/95 px-4 py-3 shadow-[0_-4px_16px_rgba(15,23,42,0.08)] backdrop-blur sm:static sm:flex-row sm:border-0 sm:bg-transparent sm:px-0 sm:py-0 sm:shadow-none"
+      >
         <input
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Message the group..."
-          className="flex-1 px-3 py-2 rounded-lg border border-white/10 bg-[#16161f] text-sm text-slate-100 placeholder:text-slate-500 outline-none"
+          className="min-h-[44px] flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none placeholder:text-slate-400 dark:border-white/10 dark:bg-[#16161f] dark:text-slate-100 dark:placeholder:text-slate-500"
         />
         <button
           type="submit"
-          className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-lg"
+          className="min-h-[44px] rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-700"
         >
           Send
         </button>

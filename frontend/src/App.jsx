@@ -23,7 +23,7 @@ function RequireAdmin({ children }) {
 
 function AuthenticatedLayout({ children }) {
   return (
-    <div className="min-h-screen bg-[#f8f7f4] text-slate-900 transition-colors duration-300 dark:bg-[#0f0f14] dark:text-slate-100">
+    <div className="min-h-screen overflow-x-hidden bg-[#f8f7f4] text-slate-900 transition-colors duration-300 dark:bg-[#0f0f14] dark:text-slate-100">
       <Navbar />
       {children}
     </div>

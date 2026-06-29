@@ -19,26 +19,26 @@ export default function TaskCard({ task }) {
   return (
     <Link
       to={`/tasks/${task.id}`}
-      className="block bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all dark:bg-[#1e1e2e] dark:border-white/10 dark:hover:border-violet-500/40"
+      className="block rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-white/10 dark:bg-[#1e1e2e] dark:hover:border-violet-500/40"
     >
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="font-medium text-slate-900 dark:text-white">{task.title}</h3>
-        <span className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-medium ${PRIORITY_COLORS[task.priority]}`}>
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+        <h3 className="break-words pr-1 font-medium text-slate-900 dark:text-white">{task.title}</h3>
+        <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${PRIORITY_COLORS[task.priority]}`}>
           {task.priority}
         </span>
       </div>
       {task.description && (
-        <p className="text-sm text-slate-500 mt-1 line-clamp-2 dark:text-slate-400">{task.description}</p>
+        <p className="mt-1 line-clamp-2 break-words text-sm text-slate-500 dark:text-slate-400">{task.description}</p>
       )}
       {task.assignees && task.assignees.length > 0 && (
-        <p className="text-xs text-slate-400 mt-2 dark:text-slate-500">{task.assignees.map((a) => a.name).join(", ")}</p>
+        <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">{task.assignees.map((a) => a.name).join(", ")}</p>
       )}
-      <div className="flex items-center gap-2 mt-3">
-        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[task.status]}`}>
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[task.status]}`}>
           {task.status.replace("_", " ")}
         </span>
         {task.dueDate && (
-          <span className={`text-xs ${overdue ? "text-red-600 font-medium" : "text-slate-400"}`}>
+          <span className={`text-xs ${overdue ? "font-medium text-red-600" : "text-slate-400"}`}>
             Due {new Date(task.dueDate).toLocaleDateString()}
             {overdue ? " · overdue" : ""}
           </span>

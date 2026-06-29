@@ -38,39 +38,47 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/30 flex items-center justify-center px-4 z-50">
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 w-full max-w-md p-6 dark:bg-[#1e1e2e] dark:border-white/10">
-        <h2 className="text-lg font-semibold text-slate-900 mb-4 dark:text-white">New task</h2>
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 px-3 py-3 sm:items-center sm:px-4 sm:py-4">
+      <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-4 shadow-lg dark:border-white/10 dark:bg-[#1e1e2e] sm:p-6">
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-3 top-3 inline-flex h-10 w-10 items-center justify-center rounded-lg text-lg text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+          aria-label="Close modal"
+        >
+          ×
+        </button>
+        <h2 className="mb-4 pr-10 text-lg font-semibold text-slate-900 dark:text-white">New task</h2>
         {error && (
-          <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-300">
+          <div className="mb-4 rounded-lg border border-red-100 bg-red-50 p-3 text-sm text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300">
             {error}
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1 dark:text-slate-300">Title</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Title</label>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100"
+              className="w-full min-h-[44px] rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none dark:border-white/10 dark:bg-[#16161f] dark:text-slate-100"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1 dark:text-slate-300">Description</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Description</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100"
+              className="w-full min-h-[44px] rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none dark:border-white/10 dark:bg-[#16161f] dark:text-slate-100"
               rows={3}
             />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1 dark:text-slate-300">Priority</label>
+              <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Priority</label>
               <select
                 value={priority}
                 onChange={(e) => setPriority(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100"
+                className="w-full min-h-[44px] rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none dark:border-white/10 dark:bg-[#16161f] dark:text-slate-100"
               >
                 <option value="LOW">Low</option>
                 <option value="MEDIUM">Medium</option>
@@ -78,20 +86,20 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1 dark:text-slate-300">Due date</label>
+              <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Due date</label>
               <input
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100"
+                className="w-full min-h-[44px] rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none dark:border-white/10 dark:bg-[#16161f] dark:text-slate-100"
               />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1 dark:text-slate-300">Assign to</label>
-            <div className="border border-slate-200 rounded-lg max-h-36 overflow-y-auto divide-y divide-slate-100 dark:border-slate-700 dark:divide-slate-800">
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Assign to</label>
+            <div className="max-h-36 divide-y divide-slate-100 overflow-y-auto rounded-lg border border-slate-200 dark:divide-slate-800 dark:border-slate-700">
               {users.map((u) => (
-                <label key={u.id} className="flex items-center gap-2 px-3 py-2 text-sm cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/70 dark:text-slate-200">
+                <label key={u.id} className="flex cursor-pointer items-center gap-2 px-3 py-2 text-sm hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800/70">
                   <input
                     type="checkbox"
                     checked={assigneeIds.includes(u.id)}
@@ -103,18 +111,18 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
               ))}
             </div>
           </div>
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex flex-col gap-2 pt-2 sm:flex-row sm:justify-end">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg dark:text-slate-400 dark:hover:text-white"
+              className="min-h-[44px] rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg"
+              className="min-h-[44px] rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-violet-700 disabled:bg-violet-400"
             >
               {loading ? "Creating..." : "Create task"}
             </button>

@@ -138,13 +138,13 @@ export default function TaskDetail() {
     }
   };
 
-  if (loading) return <p className="max-w-3xl mx-auto px-6 py-8 text-sm text-slate-400">Loading...</p>;
-  if (error && !task) return <p className="max-w-3xl mx-auto px-6 py-8 text-sm text-red-600">{error}</p>;
+  if (loading) return <p className="mx-auto max-w-3xl px-4 py-4 text-sm text-slate-400 sm:px-6 sm:py-8">Loading...</p>;
+  if (error && !task) return <p className="mx-auto max-w-3xl px-4 py-4 text-sm text-red-600 sm:px-6 sm:py-8">{error}</p>;
   if (!task) return null;
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-8">
-      <button onClick={() => navigate("/")} className="text-sm text-slate-500 hover:text-slate-700 mb-4 dark:text-slate-400 dark:hover:text-slate-200">
+    <div className="mx-auto max-w-3xl px-4 py-4 sm:px-6 sm:py-8">
+      <button onClick={() => navigate("/")} className="mb-4 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
         &larr; Back to tasks
       </button>
 
@@ -152,18 +152,18 @@ export default function TaskDetail() {
         <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-300">{error}</div>
       )}
 
-      <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm dark:bg-[#1e1e2e] dark:border-white/10">
-        <div className="flex items-start justify-between gap-3">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#1e1e2e] sm:p-6">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
           <h1 className="text-lg font-bold text-slate-900 dark:text-white">{task.title}</h1>
           {isAdmin && (
-            <button onClick={handleDelete} className="text-sm text-red-600 hover:text-red-700 font-medium">
+            <button onClick={handleDelete} className="min-h-[44px] text-sm font-medium text-red-600 hover:text-red-700">
               Delete
             </button>
           )}
         </div>
         {task.description && <p className="text-sm text-slate-600 mt-2 dark:text-slate-400">{task.description}</p>}
 
-        <div className="grid grid-cols-2 gap-4 mt-5">
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="block text-xs font-medium text-slate-500 mb-1 dark:text-slate-400">Status</label>
             <p className="px-3 py-2 text-sm text-slate-700 dark:text-slate-200">{STATUS_LABELS[task.status]}</p>
@@ -188,7 +188,7 @@ export default function TaskDetail() {
           <div className="flex items-center justify-between mb-1">
             <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">Assignees</label>
             {isAdmin && !editingAssignees && (
-              <button onClick={startEditingAssignees} className="text-xs text-violet-600 hover:text-violet-700 font-medium">
+              <button onClick={startEditingAssignees} className="text-xs font-medium text-violet-600 hover:text-violet-700">
                 Edit
               </button>
             )}
@@ -208,17 +208,17 @@ export default function TaskDetail() {
                   </label>
                 ))}
               </div>
-              <div className="flex gap-2 mt-2">
+              <div className="mt-2 flex flex-col gap-2 sm:flex-row">
                 <button
                   onClick={saveAssignees}
                   disabled={actionLoading}
-                  className="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold rounded-lg"
+                  className="min-h-[44px] rounded-lg bg-violet-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-violet-700"
                 >
                   Save
                 </button>
                 <button
                   onClick={() => setEditingAssignees(false)}
-                  className="px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 rounded-lg"
+                  className="min-h-[44px] rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-900"
                 >
                   Cancel
                 </button>
@@ -258,12 +258,12 @@ export default function TaskDetail() {
           </p>
         )}
 
-        <div className="mt-5 pt-5 border-t border-slate-100 flex flex-wrap items-center gap-2 dark:border-slate-700">
+        <div className="mt-5 flex flex-col gap-2 border-t border-slate-100 pt-5 dark:border-slate-700 sm:flex-row sm:flex-wrap sm:items-center">
           {task.status === "TODO" && canAct && (
             <button
               onClick={handleStart}
               disabled={actionLoading}
-              className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg"
+              className="min-h-[44px] rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-700 disabled:bg-violet-400"
             >
               Mark as taken
             </button>
@@ -272,7 +272,7 @@ export default function TaskDetail() {
           {task.status === "IN_PROGRESS" && canAct && !showSubmitForm && (
             <button
               onClick={() => setShowSubmitForm(true)}
-              className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-lg"
+              className="min-h-[44px] rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-700"
             >
               Submit for review
             </button>
@@ -287,13 +287,13 @@ export default function TaskDetail() {
               <button
                 onClick={handleApprove}
                 disabled={actionLoading}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white text-sm font-semibold rounded-lg"
+                className="min-h-[44px] rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:bg-emerald-400"
               >
                 Approve
               </button>
               <button
                 onClick={() => setShowRejectForm(true)}
-                className="px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 rounded-lg dark:text-red-300"
+                className="min-h-[44px] rounded-lg px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 dark:text-red-300"
               >
                 Reject
               </button>
@@ -305,7 +305,7 @@ export default function TaskDetail() {
               value={task.status}
               onChange={handleOverrideStatus}
               disabled={actionLoading}
-              className="ml-auto px-2 py-1.5 rounded-lg border border-slate-200 text-xs text-slate-500 bg-white dark:bg-[#232334] dark:border-slate-700 dark:text-slate-300"
+              className="w-full rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-500 dark:border-slate-700 dark:bg-[#232334] dark:text-slate-300 sm:ml-auto sm:w-auto"
             >
               <option value="TODO">Override: Todo</option>
               <option value="IN_PROGRESS">Override: In progress</option>
@@ -321,27 +321,27 @@ export default function TaskDetail() {
               value={completionLink}
               onChange={(e) => setCompletionLink(e.target.value)}
               placeholder="Link to your work (optional)"
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100"
+              className="w-full min-h-[44px] rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none dark:border-white/10 dark:bg-[#16161f] dark:text-slate-100"
             />
             <textarea
               value={completionNote}
               onChange={(e) => setCompletionNote(e.target.value)}
               placeholder="Note for the reviewer (optional)"
               rows={2}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100"
+              className="w-full min-h-[44px] rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none dark:border-white/10 dark:bg-[#16161f] dark:text-slate-100"
             />
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <button
                 type="submit"
                 disabled={actionLoading}
-                className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg"
+                className="min-h-[44px] rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-700 disabled:bg-violet-400"
               >
                 Submit
               </button>
               <button
                 type="button"
                 onClick={() => setShowSubmitForm(false)}
-                className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg"
+                className="min-h-[44px] rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900"
               >
                 Cancel
               </button>
@@ -356,20 +356,20 @@ export default function TaskDetail() {
               onChange={(e) => setRejectNote(e.target.value)}
               placeholder="What needs to change? (optional, posted as a comment)"
               rows={2}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100"
+              className="w-full min-h-[44px] rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none dark:border-white/10 dark:bg-[#16161f] dark:text-slate-100"
             />
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <button
                 type="submit"
                 disabled={actionLoading}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white text-sm font-semibold rounded-lg"
+                className="min-h-[44px] rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:bg-red-400"
               >
                 Send back
               </button>
               <button
                 type="button"
                 onClick={() => setShowRejectForm(false)}
-                className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg"
+                className="min-h-[44px] rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900"
               >
                 Cancel
               </button>
@@ -378,8 +378,8 @@ export default function TaskDetail() {
         )}
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-xl p-6 mt-6 shadow-sm dark:bg-[#1e1e2e] dark:border-slate-700/70">
-        <h2 className="font-semibold text-slate-900 mb-4 dark:text-white">Comments</h2>
+      <div className="mt-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700/70 dark:bg-[#1e1e2e] sm:p-6">
+        <h2 className="mb-4 font-semibold text-slate-900 dark:text-white">Comments</h2>
         <div className="space-y-3 mb-4">
           {comments.length === 0 ? (
             <p className="text-sm text-slate-400 dark:text-slate-500">No comments yet.</p>
@@ -393,16 +393,16 @@ export default function TaskDetail() {
             ))
           )}
         </div>
-        <form onSubmit={handleAddComment} className="flex gap-2">
+        <form onSubmit={handleAddComment} className="flex flex-col gap-2 sm:flex-row">
           <input
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Add a comment..."
-            className="flex-1 px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#1e1e2e] dark:border-white/10 dark:text-slate-100"
+            className="min-h-[44px] flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none dark:border-white/10 dark:bg-[#1e1e2e] dark:text-slate-100"
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-lg"
+            className="min-h-[44px] rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-700"
           >
             Post
           </button>
