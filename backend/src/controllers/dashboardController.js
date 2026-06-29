@@ -1,9 +1,26 @@
 const prisma = require("../db");
 
+const TASK_INCLUDE = {
+  assignees: { include: { user: { select: { id: true, name: true } } } },
+  creator: { select: { id: true, name: true } },
+  reviewer: { select: { id: true, name: true } },
+};
+
+function serializeTask(task) {
+  return {
+    ...task,
+    assignees: task.assignees.map((a) => a.user),
+  };
+}
+
 async function assignedToMe(req, res, next) {
   try {
-    const tasks = await prisma.task.findMany({ where: { assignedTo: req.user.id } });
-    res.json(tasks);
+    const tasks = await prisma.task.findMany({
+      where: { assignees: { some: { userId: req.user.id } } },
+      include: TASK_INCLUDE,
+      orderBy: { createdAt: "desc" },
+    });
+    res.json(tasks.map(serializeTask));
   } catch (err) {
     next(err);
   }
@@ -14,10 +31,10 @@ async function overdue(req, res, next) {
     const where = {
       dueDate: { lt: new Date() },
       status: { not: "DONE" },
-      ...(req.user.role === "ADMIN" ? {} : { assignedTo: req.user.id }),
+      ...(req.user.role === "ADMIN" ? {} : { assignees: { some: { userId: req.user.id } } }),
     };
-    const tasks = await prisma.task.findMany({ where });
-    res.json(tasks);
+    const tasks = await prisma.task.findMany({ where, include: TASK_INCLUDE, orderBy: { createdAt: "desc" } });
+    res.json(tasks.map(serializeTask));
   } catch (err) {
     next(err);
   }
@@ -27,10 +44,10 @@ async function completed(req, res, next) {
   try {
     const where = {
       status: "DONE",
-      ...(req.user.role === "ADMIN" ? {} : { assignedTo: req.user.id }),
+      ...(req.user.role === "ADMIN" ? {} : { assignees: { some: { userId: req.user.id } } }),
     };
-    const tasks = await prisma.task.findMany({ where });
-    res.json(tasks);
+    const tasks = await prisma.task.findMany({ where, include: TASK_INCLUDE, orderBy: { createdAt: "desc" } });
+    res.json(tasks.map(serializeTask));
   } catch (err) {
     next(err);
   }

@@ -73,7 +73,21 @@ async function remove(req, res, next) {
     const existing = await prisma.user.findUnique({ where: { id: req.params.id } });
     if (!existing) return next(new NotFoundError("User not found"));
 
-    await prisma.user.delete({ where: { id: req.params.id } });
+    const createdTaskCount = await prisma.task.count({ where: { createdBy: req.params.id } });
+    if (createdTaskCount > 0) {
+      return next(
+        new ValidationError("Cannot delete a user who has created tasks. Delete or reassign those tasks first.")
+      );
+    }
+
+    await prisma.$transaction([
+      prisma.taskAssignee.deleteMany({ where: { userId: req.params.id } }),
+      prisma.task.updateMany({ where: { reviewedBy: req.params.id }, data: { reviewedBy: null } }),
+      prisma.comment.deleteMany({ where: { userId: req.params.id } }),
+      prisma.activityLog.updateMany({ where: { userId: req.params.id }, data: { userId: null } }),
+      prisma.message.deleteMany({ where: { userId: req.params.id } }),
+      prisma.user.delete({ where: { id: req.params.id } }),
+    ]);
 
     await logActivity({ userId: req.user.id, action: "USER_DELETED", metadata: { deletedUserId: req.params.id } });
 
