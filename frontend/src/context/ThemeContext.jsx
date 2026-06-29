@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-const ThemeContext = createContext(null);
+export const ThemeContext = createContext(null);
 
 function getInitialTheme() {
   if (typeof window === "undefined") return "light";
 
   const storedTheme = window.localStorage.getItem("theme");
-  if (storedTheme === "dark" || storedTheme === "light") {
+  if (storedTheme === "dark" || storedTheme === "light" || storedTheme === "focus") {
     return storedTheme;
   }
 
@@ -18,13 +18,19 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.toggle("dark", theme === "dark");
-    root.style.colorScheme = theme;
+    root.classList.remove("dark", "focus");
+    if (theme === "dark") root.classList.add("dark");
+    if (theme === "focus") root.classList.add("focus");
+    root.style.colorScheme = theme === "light" ? "light" : "dark";
     window.localStorage.setItem("theme", theme);
   }, [theme]);
 
   function toggle() {
-    setTheme((currentTheme) => (currentTheme === "dark" ? "light" : "dark"));
+    setTheme((currentTheme) => {
+      if (currentTheme === "light") return "dark";
+      if (currentTheme === "dark") return "focus";
+      return "light";
+    });
   }
 
   return (

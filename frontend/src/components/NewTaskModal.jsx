@@ -39,16 +39,16 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/30 flex items-center justify-center px-4 z-50">
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 w-full max-w-md p-6">
-        <h2 className="text-lg font-semibold text-slate-900 mb-4">New task</h2>
+      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 w-full max-w-md p-6 dark:bg-[#1e1e2e] dark:border-slate-700/70 focus:border-emerald-400">
+        <h2 className="text-lg font-semibold text-slate-900 mb-4 dark:text-white focus:text-emerald-100">New task</h2>
         {error && (
-          <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm">
+          <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-300">
             {error}
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Title</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1 dark:text-slate-300">Title</label>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -56,7 +56,7 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Description</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1 dark:text-slate-300">Description</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -66,7 +66,7 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Priority</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1 dark:text-slate-300">Priority</label>
               <select
                 value={priority}
                 onChange={(e) => setPriority(e.target.value)}
@@ -78,7 +78,7 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Due date</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1 dark:text-slate-300">Due date</label>
               <input
                 type="date"
                 value={dueDate}
@@ -88,10 +88,10 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Assign to</label>
-            <div className="border border-slate-200 rounded-lg max-h-36 overflow-y-auto divide-y divide-slate-100">
+            <label className="block text-sm font-medium text-slate-700 mb-1 dark:text-slate-300">Assign to</label>
+            <div className="border border-slate-200 rounded-lg max-h-36 overflow-y-auto divide-y divide-slate-100 dark:border-slate-700 dark:divide-slate-800">
               {users.map((u) => (
-                <label key={u.id} className="flex items-center gap-2 px-3 py-2 text-sm cursor-pointer hover:bg-slate-50">
+                <label key={u.id} className="flex items-center gap-2 px-3 py-2 text-sm cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/70 dark:text-slate-200">
                   <input
                     type="checkbox"
                     checked={assigneeIds.includes(u.id)}
@@ -107,14 +107,14 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg"
+              className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg dark:text-slate-400 dark:hover:text-white"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg"
+              className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg focus:bg-emerald-500 focus:hover:bg-emerald-600"
             >
               {loading ? "Creating..." : "Create task"}
             </button>

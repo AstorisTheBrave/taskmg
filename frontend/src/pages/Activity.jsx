@@ -61,30 +61,30 @@ export default function Activity() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-bold text-slate-900">Activity log</h1>
-        <p className="text-xs text-slate-400">Showing the most recent 200 events</p>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white focus:text-emerald-100">Activity log</h1>
+        <p className="text-xs text-slate-400 dark:text-slate-500">Showing the most recent 200 events</p>
       </div>
 
       {error && (
-        <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm">{error}</div>
+        <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-300">{error}</div>
       )}
 
       {loading ? (
-        <p className="text-sm text-slate-400">Loading...</p>
+        <p className="text-sm text-slate-400 dark:text-slate-500">Loading...</p>
       ) : logs.length === 0 ? (
-        <p className="text-sm text-slate-400">No activity yet.</p>
+        <p className="text-sm text-slate-400 dark:text-slate-500">No activity yet.</p>
       ) : (
-        <div className="bg-white border border-slate-200 rounded-xl divide-y divide-slate-100">
+        <div className="bg-white border border-slate-200 rounded-xl divide-y divide-slate-100 shadow-sm dark:bg-[#1e1e2e] dark:border-slate-700/70 dark:divide-slate-800">
           {logs.map((log) => (
             <div key={log.id} className="px-4 py-3 flex items-center justify-between gap-3 text-sm">
-              <span className="text-slate-700">{describe(log)}</span>
+              <span className="text-slate-700 dark:text-slate-300">{describe(log)}</span>
               <div className="flex items-center gap-3 shrink-0">
                 {log.task && (
-                  <Link to={`/tasks/${log.task.id}`} className="text-xs text-violet-600 hover:text-violet-700 font-medium">
+                  <Link to={`/tasks/${log.task.id}`} className="text-xs text-violet-600 hover:text-violet-700 font-medium dark:text-violet-300 dark:hover:text-violet-200">
                     View task
                   </Link>
                 )}
-                <span className="text-slate-400 text-xs">{new Date(log.createdAt).toLocaleString()}</span>
+                <span className="text-slate-400 text-xs dark:text-slate-500">{new Date(log.createdAt).toLocaleString()}</span>
               </div>
             </div>
           ))}

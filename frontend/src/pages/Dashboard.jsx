@@ -62,11 +62,11 @@ export default function Dashboard() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-bold text-slate-900">Tasks</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white focus:text-emerald-100">Tasks</h1>
         {user.role === "ADMIN" && (
           <button
             onClick={openNewTask}
-            className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-lg"
+            className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-lg focus:bg-emerald-500 focus:hover:bg-emerald-600"
           >
             New task
           </button>
@@ -79,7 +79,9 @@ export default function Dashboard() {
             key={v.key}
             onClick={() => setView(v.key)}
             className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-              view === v.key ? "bg-violet-600 text-white" : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300"
+              view === v.key
+                ? "bg-violet-600 text-white dark:bg-violet-600 dark:text-white focus:bg-emerald-500"
+                : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300 dark:bg-[#1e1e2e] dark:text-slate-300 dark:border-slate-700 dark:hover:border-slate-600 focus:border-emerald-500"
             }`}
           >
             {v.label}
@@ -93,7 +95,7 @@ export default function Dashboard() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by title…"
-            className="flex-1 min-w-[200px] px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+            className="flex-1 min-w-[200px] px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500 dark:bg-[#1e1e2e] dark:border-slate-700 dark:text-slate-100 dark:placeholder:text-slate-500 focus:dark:ring-emerald-500"
           />
           <select
             value={status}
@@ -120,13 +122,13 @@ export default function Dashboard() {
       )}
 
       {error && (
-        <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm">{error}</div>
+        <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-300">{error}</div>
       )}
 
       {loading ? (
-        <p className="text-sm text-slate-400">Loading…</p>
+        <p className="text-sm text-slate-400 dark:text-slate-500 focus:text-emerald-300">Loading…</p>
       ) : tasks.length === 0 ? (
-        <p className="text-sm text-slate-400">No tasks found.</p>
+        <p className="text-sm text-slate-400 dark:text-slate-500 focus:text-emerald-300">No tasks found.</p>
       ) : (
         <div className="grid gap-3">
           {tasks.map((t) => (

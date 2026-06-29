@@ -47,7 +47,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#f8f7f4] flex items-center justify-center px-4 transition-colors duration-300 dark:bg-[#0f0f14] focus:bg-[#0d1f0f]">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
@@ -56,22 +56,22 @@ export default function Login() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-slate-900">Nucleus</h1>
-          <p className="text-slate-500 text-sm mt-1">Software project management</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white focus:text-emerald-100">Nucleus</h1>
+          <p className="text-slate-500 text-sm mt-1 dark:text-slate-400 focus:text-emerald-200">Software project management</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden dark:bg-[#1e1e2e] dark:border-slate-700/70 focus:border-emerald-500/40">
           {/* Tabs */}
-          <div className="flex border-b border-slate-100">
+          <div className="flex border-b border-slate-100 dark:border-slate-800">
             <button
               onClick={() => { setTab("login"); setError(""); }}
-              className={`flex-1 py-3.5 text-sm font-medium transition-colors ${tab === "login" ? "text-violet-600 border-b-2 border-violet-600 bg-violet-50/50" : "text-slate-500 hover:text-slate-700"}`}
+              className={`flex-1 py-3.5 text-sm font-medium transition-colors ${tab === "login" ? "text-violet-600 border-b-2 border-violet-600 bg-violet-50/50 dark:text-violet-300 dark:border-violet-400 dark:bg-violet-500/10 focus:text-emerald-300 focus:border-emerald-400 focus:bg-emerald-500/10" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"}`}
             >
               Sign in
             </button>
             <button
               onClick={() => { setTab("register"); setError(""); }}
-              className={`flex-1 py-3.5 text-sm font-medium transition-colors ${tab === "register" ? "text-violet-600 border-b-2 border-violet-600 bg-violet-50/50" : "text-slate-500 hover:text-slate-700"}`}
+              className={`flex-1 py-3.5 text-sm font-medium transition-colors ${tab === "register" ? "text-violet-600 border-b-2 border-violet-600 bg-violet-50/50 dark:text-violet-300 dark:border-violet-400 dark:bg-violet-500/10 focus:text-emerald-300 focus:border-emerald-400 focus:bg-emerald-500/10" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"}`}
             >
               Join a workspace
             </button>
@@ -79,7 +79,7 @@ export default function Login() {
 
           <div className="p-8">
             {error && (
-              <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm">
+              <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-300">
                 {error}
               </div>
             )}
@@ -87,7 +87,7 @@ export default function Login() {
             {tab === "login" ? (
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5 dark:text-slate-300">Email</label>
                   <input
                     type="email"
                     value={email}
@@ -107,11 +107,11 @@ export default function Login() {
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
-                    <input type="checkbox" className="rounded border-slate-300 text-violet-600" />
+                  <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer dark:text-slate-400">
+                    <input type="checkbox" className="rounded border-slate-300 text-violet-600 dark:border-slate-600" />
                     Remember me
                   </label>
-                  <Link to="/forgot-password" className="text-sm text-violet-600 hover:text-violet-700 font-medium">
+                  <Link to="/forgot-password" className="text-sm text-violet-600 hover:text-violet-700 font-medium dark:text-violet-300 dark:hover:text-violet-200">
                     Forgot password?
                   </Link>
                 </div>
@@ -126,7 +126,7 @@ export default function Login() {
             ) : (
               <form onSubmit={handleRegister} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Full name</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5 dark:text-slate-300">Full name</label>
                   <input
                     type="text"
                     value={name}
@@ -136,7 +136,7 @@ export default function Login() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Work email</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5 dark:text-slate-300">Work email</label>
                   <input
                     type="email"
                     value={email}
@@ -158,7 +158,7 @@ export default function Login() {
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1.5">
                     Invite code
-                    <span className="ml-1.5 text-slate-400 font-normal">(ask your team admin)</span>
+                    <span className="ml-1.5 text-slate-400 font-normal dark:text-slate-500">(ask your team admin)</span>
                   </label>
                   <input
                     type="text"
@@ -180,7 +180,7 @@ export default function Login() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-slate-400 mt-6">
+        <p className="text-center text-xs text-slate-400 mt-6 dark:text-slate-500">
           By signing in you agree to the{" "}
           <span className="text-slate-500 hover:text-slate-700 cursor-pointer">Terms of Service</span>
           {" "}and{" "}
