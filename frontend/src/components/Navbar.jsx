@@ -34,7 +34,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="border-b border-slate-100 bg-white px-4 py-3 shadow-sm transition-colors duration-200 dark:border-white/10 dark:bg-[#1a1a24] dark:shadow-none sm:px-6 nav">
+      <nav className="border-b border-slate-100 bg-white px-4 py-3 shadow-sm transition-colors duration-200 dark:border-white/10 dark:bg-[#1a1a24] dark:shadow-none sm:px-6">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 sm:gap-3">
             <button
@@ -140,3 +140,4 @@ export default function Navbar() {
     </>
   );
 }
+
