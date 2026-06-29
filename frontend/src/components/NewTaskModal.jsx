@@ -39,8 +39,8 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/30 flex items-center justify-center px-4 z-50">
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 w-full max-w-md p-6 dark:bg-[#1e1e2e] dark:border-slate-700/70 focus:border-emerald-400">
-        <h2 className="text-lg font-semibold text-slate-900 mb-4 dark:text-white focus:text-emerald-100">New task</h2>
+      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 w-full max-w-md p-6 dark:bg-[#1e1e2e] dark:border-white/10">
+        <h2 className="text-lg font-semibold text-slate-900 mb-4 dark:text-white">New task</h2>
         {error && (
           <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-300">
             {error}
@@ -52,7 +52,7 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100"
             />
           </div>
           <div>
@@ -60,7 +60,7 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100"
               rows={3}
             />
           </div>
@@ -70,7 +70,7 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
               <select
                 value={priority}
                 onChange={(e) => setPriority(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+                className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100"
               >
                 <option value="LOW">Low</option>
                 <option value="MEDIUM">Medium</option>
@@ -83,7 +83,7 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+                className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100"
               />
             </div>
           </div>
@@ -114,7 +114,7 @@ export default function NewTaskModal({ users, onCreate, onClose }) {
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg focus:bg-emerald-500 focus:hover:bg-emerald-600"
+              className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg"
             >
               {loading ? "Creating..." : "Create task"}
             </button>

@@ -144,7 +144,7 @@ export default function TaskDetail() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-8">
-      <button onClick={() => navigate("/")} className="text-sm text-slate-500 hover:text-slate-700 mb-4 dark:text-slate-400 dark:hover:text-slate-200 focus:text-emerald-300">
+      <button onClick={() => navigate("/")} className="text-sm text-slate-500 hover:text-slate-700 mb-4 dark:text-slate-400 dark:hover:text-slate-200">
         &larr; Back to tasks
       </button>
 
@@ -152,16 +152,16 @@ export default function TaskDetail() {
         <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-300">{error}</div>
       )}
 
-      <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm dark:bg-[#1e1e2e] dark:border-slate-700/70 focus:border-emerald-400">
+      <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm dark:bg-[#1e1e2e] dark:border-white/10">
         <div className="flex items-start justify-between gap-3">
-          <h1 className="text-lg font-bold text-slate-900 dark:text-white focus:text-emerald-100">{task.title}</h1>
+          <h1 className="text-lg font-bold text-slate-900 dark:text-white">{task.title}</h1>
           {isAdmin && (
             <button onClick={handleDelete} className="text-sm text-red-600 hover:text-red-700 font-medium">
               Delete
             </button>
           )}
         </div>
-        {task.description && <p className="text-sm text-slate-600 mt-2 dark:text-slate-400 focus:text-emerald-200">{task.description}</p>}
+        {task.description && <p className="text-sm text-slate-600 mt-2 dark:text-slate-400">{task.description}</p>}
 
         <div className="grid grid-cols-2 gap-4 mt-5">
           <div>
@@ -272,7 +272,7 @@ export default function TaskDetail() {
           {task.status === "IN_PROGRESS" && canAct && !showSubmitForm && (
             <button
               onClick={() => setShowSubmitForm(true)}
-              className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-lg focus:bg-emerald-500 focus:hover:bg-emerald-600"
+              className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-lg"
             >
               Submit for review
             </button>
@@ -321,20 +321,20 @@ export default function TaskDetail() {
               value={completionLink}
               onChange={(e) => setCompletionLink(e.target.value)}
               placeholder="Link to your work (optional)"
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100"
             />
             <textarea
               value={completionNote}
               onChange={(e) => setCompletionNote(e.target.value)}
               placeholder="Note for the reviewer (optional)"
               rows={2}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100"
             />
             <div className="flex gap-2">
               <button
                 type="submit"
                 disabled={actionLoading}
-                className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg focus:bg-emerald-500 focus:hover:bg-emerald-600"
+                className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg"
               >
                 Submit
               </button>
@@ -356,7 +356,7 @@ export default function TaskDetail() {
               onChange={(e) => setRejectNote(e.target.value)}
               placeholder="What needs to change? (optional, posted as a comment)"
               rows={2}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100"
             />
             <div className="flex gap-2">
               <button
@@ -379,7 +379,7 @@ export default function TaskDetail() {
       </div>
 
       <div className="bg-white border border-slate-200 rounded-xl p-6 mt-6 shadow-sm dark:bg-[#1e1e2e] dark:border-slate-700/70">
-        <h2 className="font-semibold text-slate-900 mb-4 dark:text-white focus:text-emerald-100">Comments</h2>
+        <h2 className="font-semibold text-slate-900 mb-4 dark:text-white">Comments</h2>
         <div className="space-y-3 mb-4">
           {comments.length === 0 ? (
             <p className="text-sm text-slate-400 dark:text-slate-500">No comments yet.</p>
@@ -398,7 +398,7 @@ export default function TaskDetail() {
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Add a comment..."
-            className="flex-1 px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500 dark:bg-[#1e1e2e] dark:border-slate-700 dark:text-slate-100 focus:dark:ring-emerald-500"
+            className="flex-1 px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 outline-none dark:bg-[#1e1e2e] dark:border-white/10 dark:text-slate-100"
           />
           <button
             type="submit"

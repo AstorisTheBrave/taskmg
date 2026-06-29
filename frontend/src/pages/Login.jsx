@@ -47,7 +47,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f7f4] flex items-center justify-center px-4 transition-colors duration-300 dark:bg-[#0f0f14] focus:bg-[#0d1f0f]">
+    <div className="min-h-screen bg-[#f8f7f4] flex items-center justify-center px-4 transition-colors duration-300 dark:bg-[#0f0f14]">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
@@ -56,22 +56,22 @@ export default function Login() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white focus:text-emerald-100">Nucleus</h1>
-          <p className="text-slate-500 text-sm mt-1 dark:text-slate-400 focus:text-emerald-200">Software project management</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Nucleus</h1>
+          <p className="text-slate-500 text-sm mt-1 dark:text-slate-400">Software project management</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden dark:bg-[#1e1e2e] dark:border-slate-700/70 focus:border-emerald-500/40">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden dark:bg-[#1e1e2e] dark:border-white/10">
           {/* Tabs */}
           <div className="flex border-b border-slate-100 dark:border-slate-800">
             <button
               onClick={() => { setTab("login"); setError(""); }}
-              className={`flex-1 py-3.5 text-sm font-medium transition-colors ${tab === "login" ? "text-violet-600 border-b-2 border-violet-600 bg-violet-50/50 dark:text-violet-300 dark:border-violet-400 dark:bg-violet-500/10 focus:text-emerald-300 focus:border-emerald-400 focus:bg-emerald-500/10" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"}`}
+              className={`flex-1 py-3.5 text-sm font-medium transition-colors ${tab === "login" ? "text-violet-600 border-b-2 border-violet-600 bg-violet-50/50 dark:text-violet-300 dark:border-violet-400 dark:bg-violet-500/10" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"}`}
             >
               Sign in
             </button>
             <button
               onClick={() => { setTab("register"); setError(""); }}
-              className={`flex-1 py-3.5 text-sm font-medium transition-colors ${tab === "register" ? "text-violet-600 border-b-2 border-violet-600 bg-violet-50/50 dark:text-violet-300 dark:border-violet-400 dark:bg-violet-500/10 focus:text-emerald-300 focus:border-emerald-400 focus:bg-emerald-500/10" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"}`}
+              className={`flex-1 py-3.5 text-sm font-medium transition-colors ${tab === "register" ? "text-violet-600 border-b-2 border-violet-600 bg-violet-50/50 dark:text-violet-300 dark:border-violet-400 dark:bg-violet-500/10" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"}`}
             >
               Join a workspace
             </button>
@@ -93,7 +93,7 @@ export default function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@company.com"
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500"
                   />
                 </div>
                 <div>
@@ -103,7 +103,7 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500"
                   />
                 </div>
                 <div className="flex items-center justify-between">
@@ -132,7 +132,7 @@ export default function Login() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Alex Johnson"
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500"
                   />
                 </div>
                 <div>
@@ -142,7 +142,7 @@ export default function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@company.com"
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500"
                   />
                 </div>
                 <div>
@@ -152,7 +152,7 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Min. 8 characters"
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500"
                   />
                 </div>
                 <div>
@@ -165,7 +165,7 @@ export default function Login() {
                     value={inviteCode}
                     onChange={(e) => setInviteCode(e.target.value)}
                     placeholder="e.g. NUC-XXXX"
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 outline-none dark:bg-[#16161f] dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500"
                   />
                 </div>
                 <button

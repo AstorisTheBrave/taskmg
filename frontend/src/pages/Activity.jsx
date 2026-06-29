@@ -61,7 +61,7 @@ export default function Activity() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-bold text-slate-900 dark:text-white focus:text-emerald-100">Activity log</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white">Activity log</h1>
         <p className="text-xs text-slate-400 dark:text-slate-500">Showing the most recent 200 events</p>
       </div>
 

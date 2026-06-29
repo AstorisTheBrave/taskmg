@@ -11,10 +11,6 @@
     background-color: #0f0f14;
   }
 
-  html.focus {
-    background-color: #0d1f0f;
-  }
-
   body {
     margin: 0;
     min-height: 100vh;
@@ -37,8 +33,23 @@
     color: #f8fafc;
   }
 
-  .focus body {
-    background-color: #0d1f0f;
-    color: #f8fafc;
+  .chat-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.45) transparent;
+  }
+
+  .chat-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .chat-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .chat-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(148, 163, 184, 0.35);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
   }
 }

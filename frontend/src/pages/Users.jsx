@@ -72,7 +72,7 @@ export default function Users() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-8">
-      <h1 className="text-xl font-bold text-slate-900 mb-6 dark:text-white focus:text-emerald-100">Users</h1>
+      <h1 className="text-xl font-bold text-slate-900 mb-6 dark:text-white">Users</h1>
 
       {error && (
         <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-300">{error}</div>
@@ -90,7 +90,7 @@ export default function Users() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
           type="email"
-          className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 flex-1 min-w-[160px] focus:outline-none focus:ring-2 focus:ring-violet-500 dark:bg-[#232334] dark:border-slate-700 dark:text-slate-100 focus:dark:ring-emerald-500"
+          className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 flex-1 min-w-[160px] outline-none dark:bg-[#232334] dark:border-white/10 dark:text-slate-100"
         />
         <input
           value={password}
@@ -110,7 +110,7 @@ export default function Users() {
         <button
           type="submit"
           disabled={creating}
-          className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg focus:bg-emerald-500 focus:hover:bg-emerald-600"
+          className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 text-white text-sm font-semibold rounded-lg"
         >
           {creating ? "Adding…" : "Add user"}
         </button>

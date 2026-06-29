@@ -6,7 +6,7 @@ function getInitialTheme() {
   if (typeof window === "undefined") return "light";
 
   const storedTheme = window.localStorage.getItem("theme");
-  if (storedTheme === "dark" || storedTheme === "light" || storedTheme === "focus") {
+  if (storedTheme === "dark" || storedTheme === "light") {
     return storedTheme;
   }
 
@@ -18,19 +18,14 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.remove("dark", "focus");
+    root.classList.remove("dark");
     if (theme === "dark") root.classList.add("dark");
-    if (theme === "focus") root.classList.add("focus");
     root.style.colorScheme = theme === "light" ? "light" : "dark";
     window.localStorage.setItem("theme", theme);
   }, [theme]);
 
   function toggle() {
-    setTheme((currentTheme) => {
-      if (currentTheme === "light") return "dark";
-      if (currentTheme === "dark") return "focus";
-      return "light";
-    });
+    setTheme((currentTheme) => (currentTheme === "light" ? "dark" : "light"));
   }
 
   return (
