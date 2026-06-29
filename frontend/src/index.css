@@ -53,8 +53,4 @@
     border: 2px solid transparent;
     background-clip: padding-box;
   }
-  .nav {
-    position: fixed;
-    width: 100%;
-  }
 }
