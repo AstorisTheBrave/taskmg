@@ -39,15 +39,19 @@ export default function Navbar() {
         <button
           onClick={toggle}
           type="button"
-          className="inline-flex items-center gap-2 rounded-lg px-2.5 py-2 text-slate-500 hover:bg-slate-100 transition-colors duration-150 dark:text-slate-400 dark:hover:bg-slate-800"
+          className={`relative inline-flex h-7 w-14 items-center rounded-full p-1 transition-colors duration-300 ease-in-out ${
+            theme === "dark" ? "bg-violet-600" : "bg-slate-300"
+          }`}
           title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
           aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
         >
-          <span className="text-sm" aria-hidden="true">
-            {theme === "light" ? "🌙" : "☀️"}
-          </span>
-          <span className="text-sm font-medium">
-            {theme === "light" ? "Dark" : "Light"}
+          <span
+            className={`flex h-5 w-5 items-center justify-center rounded-full bg-white shadow-sm transition-transform duration-300 ease-in-out ${
+              theme === "dark" ? "translate-x-7" : "translate-x-0"
+            }`}
+            aria-hidden="true"
+          >
+            {theme === "light" ? "☀️" : "🌙"}
           </span>
         </button>
         <button
