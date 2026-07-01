@@ -6,42 +6,40 @@ const PRIORITY_COLORS = {
   HIGH: "bg-red-100 text-red-600 dark:bg-red-500/15 dark:text-red-300",
 };
 
-const STATUS_COLORS = {
-  TODO: "bg-slate-100 text-slate-600 dark:bg-slate-700/60 dark:text-slate-300",
-  IN_PROGRESS: "bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300",
-  REVIEW: "bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300",
-  DONE: "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300",
-};
-
 export default function TaskCard({ task }) {
-  const overdue = task.dueDate && task.status !== "DONE" && new Date(task.dueDate) < new Date();
+  const priority = (task.priority || "MEDIUM").toUpperCase();
+  const primaryAssignee = task.assignees?.[0];
+  const initials = primaryAssignee?.name
+    ?.split(" ")
+    .map((part) => part[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase() || "?";
 
   return (
     <Link
       to={`/tasks/${task.id}`}
-      className="block rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-white/10 dark:bg-[#1e1e2e] dark:hover:border-violet-500/40"
+      className="block rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-white/5 dark:bg-[#1e1e2e] dark:hover:bg-[#22222e]"
     >
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-        <h3 className="break-words pr-1 font-medium text-slate-900 dark:text-white">{task.title}</h3>
-        <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${PRIORITY_COLORS[task.priority]}`}>
-          {task.priority}
+      <div className="flex items-start justify-between gap-2">
+        <h3 className="line-clamp-2 break-words text-sm font-semibold text-slate-900 dark:text-white">{task.title}</h3>
+        <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] ${PRIORITY_COLORS[priority] || PRIORITY_COLORS.MEDIUM}`}>
+          {priority}
         </span>
       </div>
-      {task.description && (
-        <p className="mt-1 line-clamp-2 break-words text-sm text-slate-500 dark:text-slate-400">{task.description}</p>
-      )}
-      {task.assignees && task.assignees.length > 0 && (
-        <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">{task.assignees.map((a) => a.name).join(", ")}</p>
-      )}
-      <div className="mt-3 flex flex-wrap items-center gap-2">
-        <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[task.status]}`}>
-          {task.status.replace("_", " ")}
-        </span>
-        {task.dueDate && (
-          <span className={`text-xs ${overdue ? "font-medium text-red-600" : "text-slate-400"}`}>
-            Due {new Date(task.dueDate).toLocaleDateString()}
-            {overdue ? " · overdue" : ""}
-          </span>
+
+      <div className="mt-2 flex items-center justify-between gap-2">
+        {task.id ? (
+          <span className="text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">#{task.id}</span>
+        ) : (
+          <span />
+        )}
+        {primaryAssignee ? (
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-[10px] font-semibold text-slate-600 dark:bg-slate-700/70 dark:text-slate-200">
+            {initials}
+          </div>
+        ) : (
+          <div className="h-7 w-7 rounded-full border border-dashed border-slate-200 dark:border-slate-700" />
         )}
       </div>
     </Link>
